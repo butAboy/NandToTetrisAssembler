@@ -7,39 +7,6 @@ import hack_parser, code_generator, pathlib
 
 #The assmembler process is divided into stages
 #__Preprocess function___
-def find_file(filename_or_path:str) ->Path or None:
-    target_path = Path(filename_or_path)
-
-    #---first treat input as direct path (whether absolute, or relative to CWD)
-    if target_path.is_file(): #Checks if it exists and is a file
-        return target_path
-
-    search_dirs = []
-
-    script_dir = Path(__file__).resolve().parent #add the scripts directory
-    search_dirs.append(script_dir)
-
-    #add other possible directories to search in the user's pc
-    #the first 2 directories don't exist on this pc but may exist in a users pc as subfolders in CWD
-    search_dirs.append(script_dir / 'asm_files')
-    search_dirs.append(script_dir/ 'inputs')
-
-    search_dirs.append(Path('C:\Users\Chibueze\Documents\PDFs\New folder\Elements of Computing Systems'))
-
-    #Extract only the file name if the input was a path that didn't exist directly
-    #handles cases where the user types "myfolder/my_file.asm" but myfolder isn't in CWD
-    #but my_file might be found elsewhere.
-    
-    filename = target_path.name  #Extract just the file name from the input path
-
-    for start_dir in search_dirs:
-        #Ensure search directory actually exists
-        if not start_dir.is_dir():
-            continue #skip if the directory doesn't exist
-
-        for found_file in start_dir.rglob(filename):
-            if found_file.is_file():
-                return found_file
 
 #__STAGE 1__ receiving input and passing it to the parser
 
@@ -48,6 +15,9 @@ def find_file(filename_or_path:str) ->Path or None:
 print('''Please input the absolute path to file if the file isn\'t in the current directory
 Hint: use / delimitter when writing path directory or \\\\ to avoid errors ''')
 file = input('\'.asm\' file path here: ')
+# Strip extra double quotes incase text input was pasted and not typed
+file = file.strip('"')
+print(file + '\n')
 
 #initialise symbol table and parser
 symbol_table = {'R0':'0', 'R1':'1', 'R2':'2', 'R3':'3', 'R4':'4', 'R5':'5', 'R6':'6',
@@ -77,7 +47,7 @@ output_file_path = pathlib.Path(file).with_suffix('.hack')
 with open(output_file_path, 'w') as outFile:
     while hack_parser.has_more_lines(p2):
         hack_parser.advance(p2)
-        
+
         if hack_parser.instructionType(p2) == 'A_INSTRUCTION':
             symbol = hack_parser.symbol(p2)
             if symbol.isdigit(): #A_instruction of type @1234
@@ -91,6 +61,7 @@ with open(output_file_path, 'w') as outFile:
                     bin_instr = bin(variable_reg).lstrip('0b').zfill(16)
                     symbol_table.update({symbol: variable_reg})
                     variable_reg +=1
+               
             outFile.write(bin_instr + '\n')
                     
         elif hack_parser.instructionType(p2) == 'C_INSTRUCTION':

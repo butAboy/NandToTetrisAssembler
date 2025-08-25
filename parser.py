@@ -9,6 +9,56 @@ import os, re
 """ Assembler gets a file path, checks if its an abs path. Else checks if its in current directory,
     else search for it in the provided directory by user."""
 
+# def find_file_recursively(filename, start_dir ='.'):
+#     for root, dirs, files in os.walk(start_dir):
+#         if filename in files:
+#             return os.path.join(root, filename)
+#         else:
+#             return None
+
+# def find_file(filename_or_path:str) ->Path or None:
+#     target_path = Path(filename_or_path)
+
+#     #---first treat input as direct path (whether absolute, or relative to CWD)
+#     if target_path.is_file(): #Checks if it exists and is a file
+#         return target_path
+
+#     search_dirs = []
+
+#     script_dir = Path(__file__).resolve().parent #add the scripts directory
+#     search_dirs.append(script_dir)
+
+#     #add other possible directories to search in the user's pc
+#     #the first 2 directories don't exist on this pc but may exist in a users pc as subfolders in CWD
+#     search_dirs.append(script_dir / 'asm_files')
+#     search_dirs.append(script_dir/ 'inputs')
+
+#     search_dirs.append(Path("C://Users//Chibueze//Documents//PDFs//New folder//Elements of Computing Systems"))
+
+#     #Extract only the file name if the input was a path that didn't exist directly
+#     #handles cases where the user types "myfolder/my_file.asm" but myfolder isn't in CWD
+#     #but my_file might be found elsewhere.
+    
+#     filename = target_path.name  #Extract just the file name from the input path
+
+#     for start_dir in search_dirs:
+#         #Ensure search directory actually exists
+#         if not start_dir.is_dir():
+#             continue #skip if the directory doesn't exist
+
+#         for found_file in start_dir.rglob(filename):
+#             if found_file.is_file():
+#                 return found_file
+    
+
+    
+
+# if os.path.exists(filePath):
+#         found_path = filePath
+#     else:
+#         script_dir = os.path.dirname(os.path.abspath(__file__))
+        # found_path = find_file_recursively(filePath, start_
+
 #The constructor
 
 def make_parser(filePath:str):
