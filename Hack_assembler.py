@@ -17,7 +17,7 @@ Hint: use / delimitter when writing path directory or \\\\ to avoid errors ''')
 file = input('\'.asm\' file path here: ')
 # Strip extra double quotes incase text input was pasted and not typed
 file = file.strip('"')
-print(file + '\n')
+
 
 #initialise symbol table and parser
 symbol_table = {'R0':'0', 'R1':'1', 'R2':'2', 'R3':'3', 'R4':'4', 'R5':'5', 'R6':'6',
